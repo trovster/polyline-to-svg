@@ -1,0 +1,11 @@
+{
+  "name": "polyline-to-svg",
+  "description": "Convert a collection of Google Map polyline encoded strings to SVG.",
+  "author": {
+    "name": "Trevor Morris"
+  },
+  "main": "src/main.js",
+  "scripts": {
+    "start": "node ./src/main.js"
+  }
+}
