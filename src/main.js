@@ -10,8 +10,8 @@ const index = path.resolve(process.cwd(), 'dist/index.html')
 const directory = path.resolve(process.cwd(), 'polylines')
 
 const svgs = fs.readdirSync(directory).filter(file => path.extname(file) == '.txt').map(file => {
-  let minX = 256,
-      minY = 256,
+  let minX = config.size,
+      minY = config.size,
       maxX = 0,
       maxY = 0
 
@@ -27,7 +27,7 @@ const svgs = fs.readdirSync(directory).filter(file => path.extname(file) == '.tx
 
   for (var c = 0; c < coordinates.length; ++c) {
     const [lng, lat] = coordinates[c]
-    const point = latLng2point(lat, lng)
+    const point = latLng2point(lat, lng, config.size)
 
     minX = Math.min(minX, point.x)
     minY = Math.min(minY, point.y)
