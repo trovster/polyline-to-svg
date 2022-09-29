@@ -7,10 +7,7 @@ const fileName = require('./helpers/fileName')
 const index = path.resolve(process.cwd(), 'dist/index.html')
 const directory = path.resolve(process.cwd(), 'polylines')
 
-const svgs = fs.readdirSync(directory, {
-  encoding: 'utf8',
-  flag: 'r',
-}).map(file => {
+const svgs = fs.readdirSync(directory).filter(file => path.extname(file) == '.txt').map(file => {
   let minX = 256,
       minY = 256,
       maxX = 0,
