@@ -3,6 +3,8 @@ const path = require('path')
 const convertPolyline = require('./helpers/decodePolyline')
 const latLng2point = require('./helpers/latLng2point')
 const fileName = require('./helpers/fileName')
+const config = require('./config')
+const { format } = require('path')
 
 const index = path.resolve(process.cwd(), 'dist/index.html')
 const directory = path.resolve(process.cwd(), 'polylines')
@@ -35,16 +37,16 @@ const svgs = fs.readdirSync(directory).filter(file => path.extname(file) == '.tx
     svgPath.push([point.x, point.y].join(','))
   }
 
-  const width = (maxX - minX)
+  const width = (maxX - minX) * 1.05
   const height = (maxY - minY) * 1.05
-  const x = minX * 0.999995
-  const y = minY * 0.999995
+  const x = minX
+  const y = minY
   const viewBox = `${x} ${y} ${width} ${height}`
-  const strokeWidth = Math.max(width, height) * 0.005
+  const strokeWidth = Math.max(width, height) * 0.005 * config.strokeWidth
 
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" height="400" width="400" viewport="0 0 400 400" viewBox="${viewBox}">
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" viewBox="${viewBox}">
     <g>
-      <path d="${`M${svgPath.join(' ')}`}" stroke="blue" stroke-width="${strokeWidth}" fill="none" />
+      <path d="${`M${svgPath.join(' ')}`}" stroke="${config.stroke}" stroke-width="${strokeWidth}" fill="none" />
     </g>
   </svg>`
 
@@ -61,18 +63,60 @@ const html = `<html>
       padding: 0;
     }
     body {
+      padding: 1rem;
+      text-align: center;
+      color: #666;
+      background: ${config.background};
+    }
+    h1 {
+      margin: 1rem 0 2rem;
+      text-align: center;
+      font-size: 2rem;
+      font-family: sans-serif;
+    }
+    p {
+      margin: 1rem 0;
+    }
+    h1 + p {
+      margin-top: -1.5rem;
+      font-size: 1.2rem;
+    }
+    a {
+      color: ${config.stroke};
+    }
+    ul {
       display: flex;
       flex-wrap: wrap;
+      list-style: none;
+      align-items: center;
+      margin: -10px;
     }
-    img, svg {
-      margin: 0;
-      padding: 0;
-      background: #eee;
+    li {
+      display: flex;
+      margin: 10px;
+      justify-content: center;
+      width: calc((100% - (${config.columns} * 20px)) / ${config.columns});
+      aspect-ratio: 1/1;
+      background: #fff;
+    }
+    svg {
+      display: block;
+      height: 100%;
+      margin: 0 5px 5px;
+      padding: 10px;
     }
   </style>
 </head>
 <body>
-    ${svgs.join('\r\n')}
+    <h1>Polyline to SVG</h1>
+    <p>Converting a collection of polyline encoded strings to SVG.</p>
+    <ul>
+      <li>${svgs.join('</li><li>')}</li>
+    </ul>
+    <p>
+      A project by <a href="https://www.trovster.com/">Trevor Morris</a>.
+      View on <a href="https://github.com/trovster/polyline-to-svg">GitHub</a>.
+    </p>
 </body>
 </html>`
 
