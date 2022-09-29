@@ -51,7 +51,7 @@ module.exports = (config, svgs) => `<html>
     svg path {
       stroke-dashoffset: 2.2486135065555573px;
       stroke-dasharray: 2.2486135065555573px;
-      transition: stroke-dashoffset ${config.speed} cubic-bezier(0.47, 0, 0.745, 0.715) 0;
+      transition: stroke-dashoffset ${config.speed} cubic-bezier(0.47, 0, 0.745, 0.715);
     }
     svg.active path {
       stroke-dashoffset: 0;
