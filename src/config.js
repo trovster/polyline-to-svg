@@ -3,4 +3,5 @@ module.exports = {
   stroke: '#2490ba', // 2490ba, d60058
   strokeWidth: 1,
   columns: 4,
+  speed: '15s',
 }
